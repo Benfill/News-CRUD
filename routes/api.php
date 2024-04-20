@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\NewsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,7 +18,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'Api', 'prefix' => 'v1'], function () {
     Route::post('login', [AuthenticationController::class, 'store']);
+
     Route::group(['middleware' => 'auth:api'], function () {
+
+        Route::prefix('news')->group(function () {
+            Route::get('/', [NewsController::class, 'index']);
+            Route::get('/{slug}', [NewsController::class, 'show']);
+            Route::post('/', [NewsController::class, 'store']);
+            Route::put('/{id}', [NewsController::class, 'update']);
+            Route::delete('/', [NewsController::class, 'destroy']);
+        });
+
         Route::post('logout', [AuthenticationController::class, 'destroy']);
     });
 });
