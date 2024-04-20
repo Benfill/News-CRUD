@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\NewsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +29,9 @@ Route::group(['namespace' => 'Api', 'prefix' => 'v1'], function () {
             Route::post('/', [NewsController::class, 'store']);
             Route::put('/', [NewsController::class, 'update']);
             Route::delete('/', [NewsController::class, 'destroy']);
+
+            Route::get('/category/{categoryName}', [CategoryController::class, 'searchForArticlesByCategory']);
+
         });
 
         Route::post('logout', [AuthenticationController::class, 'destroy']);
