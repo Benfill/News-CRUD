@@ -52,11 +52,10 @@ class NewsController extends Controller
 
     }
 
-    function update(Request $request)
+    function update(Request $request, $id)
     {
-        $data = $request->only('id', 'Contenu', 'category_id');
+        $data = $request->only('Contenu', 'category_id');
         $validator = Validator::make($data, [
-            'id' => 'required|numeric|exists:news,id',
             'category_id' => 'required|numeric',
             'Contenu' => 'required|string|min:12'
         ]);
@@ -65,7 +64,7 @@ class NewsController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $news = News::find($data['id']);
+        $news = News::find($id);
         $news->Contenu = $data['Contenu'];
         $news->category_id = $data['category_id'];
         $news->save();
@@ -86,18 +85,9 @@ class NewsController extends Controller
         return response()->json(['news' => $news, 'success' => true], 200);
     }
 
-    function destroy(Request $request)
+    function destroy($id)
     {
-        $data = $request->only('id');
-        $validator = Validator::make($data, [
-            'id' => 'required|numeric|exists:news,id',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $news = News::find($data['id']);
+        $news = News::find($id);
         if ($news) {
             $news->delete();
             return response()->json(['success' => true, 'message' => 'news deleted successfully'], 204);
