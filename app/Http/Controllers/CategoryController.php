@@ -22,12 +22,28 @@ class CategoryController extends Controller
             return $article->type === 'news' && Carbon::now()->gt($article->expiration_date);
         });
 
+        $news = $news->map(function ($article) {
+            $article->category = [
+                'id' => $article->category_id,
+                'name' => $article->category->name,
+            ];
+
+            if (isset($article->category->parent)) {
+                $article->category['parent'] = [
+                    'id' => $article->category->parent->id,
+                    'name' => $article->category->parent->name,
+                ];
+            }
+
+            return $article;
+        });
+
         return response()->json($news);
     }
 
     protected function getArticlesRecursive($category)
     {
-        $news = $category->news;
+        $news = $category->news()->with('category', 'category.parent')->get();
 
         foreach ($category->children as $childCategory) {
             $news = $news->merge($this->getArticlesRecursive($childCategory));
@@ -35,4 +51,5 @@ class CategoryController extends Controller
 
         return $news;
     }
+
 }
