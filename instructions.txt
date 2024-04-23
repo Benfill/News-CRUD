@@ -1,0 +1,5 @@
+php artisan migrate
+php artisan db:seed --class=CategoriesSeeder
+php artisan db:seed --class=AdminSeeder
+php artisan passport:keys
+php artisan passport:client --personal
