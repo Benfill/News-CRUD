@@ -1,3 +1,4 @@
+composer install
 php artisan migrate
 php artisan db:seed --class=CategoriesSeeder
 php artisan db:seed --class=AdminSeeder
