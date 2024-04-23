@@ -3,6 +3,7 @@
 ## Auteur
 - Nom : Benfillous Anass
 - Email : [Benfianass@gmail.com](mailto:Benfianass@gmail.com)
+- Repository : [Test technique : CRUD de News en Laravel](https://github.com/Benfill/News-CRUD)
 
 ## Description du Projet
 Ce projet consiste en une API REST utilisant Laravel 10 pour gérer des news. Les fonctionnalités incluent l'ajout, la suppression, la mise à jour et la consultation des news. L'API propose également des routes pour afficher une liste de news dans l'ordre décroissant de leur date de publication, sans inclure celles qui ont expiré. De plus, un algorithme de recherche récursif permet de trouver des news associées à des catégories spécifiques, y compris dans les sous-catégories.
