@@ -27,8 +27,8 @@ Route::group(['namespace' => 'Api', 'prefix' => 'v1'], function () {
             Route::get('/', [NewsController::class, 'index']);
             Route::get('/{slug}', [NewsController::class, 'show']);
             Route::post('/', [NewsController::class, 'store']);
-            Route::put('/', [NewsController::class, 'update']);
-            Route::delete('/', [NewsController::class, 'destroy']);
+            Route::put('/{id}', [NewsController::class, 'update']);
+            Route::delete('/{id}', [NewsController::class, 'destroy']);
 
             Route::get('/category/{categoryName}', [CategoryController::class, 'searchForArticlesByCategory']);
 
