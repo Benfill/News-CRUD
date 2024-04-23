@@ -28,12 +28,13 @@ class NewsController extends Controller
 
     function store(Request $request)
     {
-        $data = $request->only('Titre', 'Contenu', 'category_id');
+        $data = $request->only('Titre', 'Contenu', 'category_id', 'Date_expiration');
 
         $validator = Validator::make($data, [
             'Titre' => 'required|string|unique:news',
             'Contenu' => 'required|string|min:12',
-            'category_id' => 'required|numeric'
+            'category_id' => 'required|numeric',
+            'Date_expiration' => 'required|numeric'
         ]);
 
         if ($validator->fails()) {
@@ -41,11 +42,11 @@ class NewsController extends Controller
         }
         $news = News::create([
             'Titre' => $request->Titre,
-            'slug' => Str::slug($request->Titre),
+            'slug' => substr(Str::slug($request->Titre), 0, 50),
             'Contenu' => $request->Contenu,
             'category_id' => $request->category_id,
             'Date_debut' => Carbon::now(),
-            'Date_expiration' => Carbon::now()->addDays('2'),
+            'Date_expiration' => Carbon::now()->addDays($request->Date_expiration),
         ]);
         return response()->json(['news' => $news, 'success' => true, 'message' => 'news added successfully'], 201);
 
