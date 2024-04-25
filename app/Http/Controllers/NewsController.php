@@ -55,9 +55,10 @@ class NewsController extends Controller
 
     function update(Request $request, $id)
     {
-        $data = $request->only('Contenu', 'category_id');
+        $data = $request->only('Contenu', 'category_id', 'Date_expiration');
         $validator = Validator::make($data, [
             'category_id' => 'required|numeric',
+            'Date_expiration' => 'required|numeric',
             'Contenu' => 'required|string|min:12'
         ]);
 
@@ -68,21 +69,17 @@ class NewsController extends Controller
         $news = News::find($id);
         $news->Contenu = $data['Contenu'];
         $news->category_id = $data['category_id'];
+        $news->Date_expiration = $data['Date_expiration'];
         $news->save();
         return response()->json(['news' => $news, 'success' => true, 'message' => 'news updated successfully'], 200);
     }
 
     function show($slug)
     {
-        $validator = Validator::make([$slug], [
-            'slug' => 'required|string|exists:news,slug'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
         $news = News::where('slug', $slug)->first();
+        if (!$news) {
+            return response()->json(['errors' => 'Article doesnt exists'], 422);
+        }
         return response()->json(['news' => $news, 'success' => true], 200);
     }
 
